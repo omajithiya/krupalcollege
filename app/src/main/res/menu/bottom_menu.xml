@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottom_home"
+        android:icon="@drawable/ic_home_25"
+        android:title="Home" />
+    <item
+        android:id="@+id/bottom_shopping"
+        android:icon="@drawable/ic_baseline_shopping_cart_24"
+        android:title="Shopping" />
+    <item
+        android:id="@+id/bottom_settings"
+        android:icon="@drawable/ic_setting_25"
+        android:title="Settings" />
+    <item
+        android:id="@+id/bottom_profile"
+        android:icon="@drawable/ic_account_25"
+        android:title="Profile" />
+</menu>

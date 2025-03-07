@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    tools:context=".Add_cake_Activity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/levender_border">
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="1dp"
+                    android:id="@+id/spinner"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <EditText
+                android:id="@+id/etCakeName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Cake Name" />
+
+            <EditText
+                android:id="@+id/etCakeDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Cake Description" />
+
+            <EditText
+                android:id="@+id/etCakePrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Cake Price" />
+
+            <EditText
+                android:id="@+id/etCakeImageUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Cake Image URL" />
+
+            <ImageView
+                android:id="@+id/ivCakePreview"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnAddCake"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Cake" />
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

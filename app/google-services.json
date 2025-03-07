@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "394832143196",
+    "project_id": "thekrppro",
+    "storage_bucket": "thekrppro.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394832143196:android:5371635033c3c5616ad799",
+        "android_client_info": {
+          "package_name": "com.example.krupalcollege"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJk12LwsOlkKMkcwGjGX4ixDkO1HB0sAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
