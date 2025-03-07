@@ -16,11 +16,12 @@ import com.google.firebase.database.ValueEventListener
 
 class BuyActivity : AppCompatActivity() {
 
-    private lateinit var listView: ListView
-    private lateinit var cartAdapter: CartAdapter
-    private lateinit var cartList: MutableList<Cake>
     private lateinit var database: DatabaseReference
     private lateinit var auth: FirebaseAuth
+    private lateinit var cartListView: ListView
+    private lateinit var cartAdapter: CartAdapter
+    private val cartList = mutableListOf<Cake>()
+    private val cartKeys = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +39,7 @@ class BuyActivity : AppCompatActivity() {
                     finish()
                     true
                 }
+
                 R.id.bottom_shopping -> true
                 R.id.bottom_settings -> {
                     startActivity(Intent(applicationContext, SettingActivity::class.java))
@@ -45,45 +47,46 @@ class BuyActivity : AppCompatActivity() {
                     finish()
                     true
                 }
+
                 R.id.bottom_profile -> {
                     startActivity(Intent(applicationContext, AccountActivity::class.java))
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                     finish()
                     true
                 }
+
                 else -> false
             }
         }
 
         //write to the other code
-        listView = findViewById(R.id.listViewCart)
-
-        cartList = mutableListOf()
-        cartAdapter = CartAdapter(this, cartList)
-        listView.adapter = cartAdapter
-
+        cartListView = findViewById(R.id.cartListView)
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().getReference("cart")
 
-        loadCartItems()
-
-    }
-
-    private fun loadCartItems() {
         val userId = auth.currentUser?.uid
         if (userId != null) {
             database.child(userId).addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     cartList.clear()
-                    for (cartSnapshot in snapshot.children) {
-                        val cartItem = cartSnapshot.getValue(Cake::class.java)
-                        cartItem?.let { cartList.add(it) }
+                    cartKeys.clear()
+
+                    for (itemSnapshot in snapshot.children) {
+                        val cake = itemSnapshot.getValue(Cake::class.java)
+                        val key = itemSnapshot.key
+                        if (cake != null && key != null) {
+                            cartList.add(cake)
+                            cartKeys.add(key)
+                        }
                     }
-                    cartAdapter.notifyDataSetChanged()
+
+                    cartAdapter = CartAdapter(this@BuyActivity, cartList, cartKeys)
+                    cartListView.adapter = cartAdapter
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@BuyActivity, "Failed to load cart", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@BuyActivity, "Failed to load cart", Toast.LENGTH_SHORT)
+                        .show()
                 }
             })
         }

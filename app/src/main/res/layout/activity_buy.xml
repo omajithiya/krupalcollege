@@ -9,7 +9,7 @@
     tools:context=".BuyActivity">
 
     <ListView
-        android:id="@+id/listViewCart"
+        android:id="@+id/cartListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

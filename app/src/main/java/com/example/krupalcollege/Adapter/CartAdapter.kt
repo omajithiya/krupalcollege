@@ -12,50 +12,53 @@ import com.bumptech.glide.Glide
 import com.example.krupalcollege.Cake
 import com.example.krupalcollege.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
-class CartAdapter(private val context: Context, private val cartList: MutableList<Cake>) : BaseAdapter() {
+class CartAdapter(private val context: Context, private var cartList: MutableList<Cake>, private val cartKeys: MutableList<String>) : BaseAdapter() {
 
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val database: DatabaseReference = FirebaseDatabase.getInstance().getReference("cart")
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid
 
     override fun getCount(): Int = cartList.size
+
     override fun getItem(position: Int): Any = cartList[position]
+
     override fun getItemId(position: Int): Long = position.toLong()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_cart, parent, false)
 
-        val ivCakeImage: ImageView = view.findViewById(R.id.ivCakeImageCart)
-        val tvCakeName: TextView = view.findViewById(R.id.tvCakeNameCart)
-        val tvCakePrice: TextView = view.findViewById(R.id.tvCakePriceCart)
-        val btnRemove: ImageView = view.findViewById(R.id.btnRemoveCartItem)
+        val ivCakeImage: ImageView = view.findViewById(R.id.ivCartCakeImage)
+        val tvCakeName: TextView = view.findViewById(R.id.tvCartCakeName)
+        val tvCakePrice: TextView = view.findViewById(R.id.tvCartCakePrice)
+        val ivRemoveCartItem: ImageView = view.findViewById(R.id.ivRemoveCartItem)
 
-        val cartItem = getItem(position) as Cake
+        val cake = getItem(position) as Cake
 
-        tvCakeName.text = cartItem.name
-        tvCakePrice.text = "₹${cartItem.price}"
-        Glide.with(context).load(cartItem.imageUrl).into(ivCakeImage)
+        tvCakeName.text = cake.name
+        tvCakePrice.text = "₹${cake.price}"
 
-        btnRemove.setOnClickListener {
-            val userId = FirebaseAuth.getInstance().currentUser?.uid
+        Glide.with(context)
+            .load(cake.imageUrl)
+            .placeholder(R.drawable.loding_image)
+            .error(R.drawable.noimage)
+            .into(ivCakeImage)
+
+        // Remove Item from Cart
+        ivRemoveCartItem.setOnClickListener {
             if (userId != null) {
-                val database: DatabaseReference = FirebaseDatabase.getInstance().getReference("Cart").child(userId)
-                database.child(cartList[position].id).removeValue().addOnSuccessListener {
-                    Toast.makeText(context, "Item removed", Toast.LENGTH_SHORT).show()
+                database.child(userId).child(cartKeys[position]).removeValue().addOnSuccessListener {
+                    Toast.makeText(context, "Item removed from cart", Toast.LENGTH_SHORT).show()
                     cartList.removeAt(position)
-                    notifyDataSetChanged()  // ✅ Update UI after removing an item
+                    cartKeys.removeAt(position)
+                    notifyDataSetChanged()
+                }.addOnFailureListener {
+                    Toast.makeText(context, "Failed to remove item", Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
-
         return view
-
     }
-
 }

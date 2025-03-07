@@ -1,22 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="10dp"
-    android:background="@android:color/white"
-    android:elevation="2dp">
+    android:background="@android:color/white">
 
-    <!-- Product Image -->
+    <!-- Cake Image -->
     <ImageView
-        android:id="@+id/ivCakeImageCart"
+        android:id="@+id/ivCartCakeImage"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:scaleType="centerCrop"
         android:src="@drawable/noimage"/>
 
-    <!-- Product Details -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -24,29 +21,31 @@
         android:orientation="vertical"
         android:paddingStart="10dp">
 
+        <!-- Cake Name -->
         <TextView
-            android:id="@+id/tvCakeNameCart"
+            android:id="@+id/tvCartCakeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cake Name"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="@android:color/black"/>
 
+        <!-- Cake Price -->
         <TextView
-            android:id="@+id/tvCakePriceCart"
+            android:id="@+id/tvCartCakePrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="₹0"
+            android:text="₹100"
             android:textSize="14sp"
             android:textColor="@android:color/holo_red_dark"/>
     </LinearLayout>
 
     <!-- Remove Button -->
     <ImageView
-        android:id="@+id/btnRemoveCartItem"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:id="@+id/ivRemoveCartItem"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:src="@android:drawable/ic_delete"
-        android:contentDescription="Remove"
         android:padding="5dp"/>
 </LinearLayout>
