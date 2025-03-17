@@ -10,12 +10,15 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
 import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.Switch
 import android.widget.Toast
@@ -24,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 class SettingActivity : AppCompatActivity() {
     //main setting line add on om
@@ -165,22 +169,40 @@ class SettingActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Enter Password")
 
-        // Create an input field
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+        layout.setPadding(50, 20, 50, 0)
+
         val input = EditText(this)
         input.hint = "Password"
-        builder.setView(input)
+        layout.addView(input)
+
+        // ProgressBar
+        val progressBar = ProgressBar(this)
+        progressBar.visibility = View.GONE // Initially hidden
+        layout.addView(progressBar)
+
+        builder.setView(layout)
 
         builder.setPositiveButton("Verify") { dialog, _ ->
             val enteredPassword = input.text.toString().trim()
-            val correctPassword = "12345"  // 🔑 Change this to your secure password
 
-            if (enteredPassword == correctPassword) {
-                // Open new activity if password is correct
-                startActivity(Intent(this, Add_cake_Activity::class.java))
-            } else {
-                Toast.makeText(this, "Incorrect Password!", Toast.LENGTH_SHORT).show()
+            progressBar.visibility = View.VISIBLE  // Show ProgressBar
+
+            val databaseRef = FirebaseDatabase.getInstance().getReference("admin/password")
+            databaseRef.get().addOnSuccessListener { dataSnapshot ->
+                progressBar.visibility = View.GONE  // Hide ProgressBar
+
+                val correctPassword = dataSnapshot.value.toString()
+                if (enteredPassword == correctPassword) {
+                    startActivity(Intent(this, Add_cake_Activity::class.java))
+                } else {
+                    Toast.makeText(this, "Incorrect Password!", Toast.LENGTH_SHORT).show()
+                }
+            }.addOnFailureListener {
+                progressBar.visibility = View.GONE  // Hide ProgressBar
+                Toast.makeText(this, "Failed to verify password", Toast.LENGTH_SHORT).show()
             }
-            dialog.dismiss()
         }
 
         builder.setNegativeButton("Cancel") { dialog, _ ->
@@ -189,6 +211,8 @@ class SettingActivity : AppCompatActivity() {
 
         builder.show()
     }
+
+
 
     private fun showLogoutConfirmation() {
         val alertDialog = AlertDialog.Builder(this)

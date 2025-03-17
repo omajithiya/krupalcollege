@@ -21,6 +21,7 @@ class Add_cake_Activity : AppCompatActivity() {
     private lateinit var databaseReference: DatabaseReference
     private lateinit var spinner: Spinner
     private lateinit var adapterItems: ArrayAdapter<String>
+//    val id = 0
 
     var items = arrayOf(
         "Main bord cake",
@@ -91,6 +92,7 @@ class Add_cake_Activity : AppCompatActivity() {
     }
 
     private fun addCakeToFirebase() {
+//        val mainid = id.toString().trim()
         val name = etCakeName.text.toString().trim()
         val description = etCakeDescription.text.toString().trim()
         val price = etCakePrice.text.toString().trim()
@@ -102,7 +104,7 @@ class Add_cake_Activity : AppCompatActivity() {
         }
 
         val cakeId = databaseReference.push().key!!  // Generate unique ID
-        val newCake = Cake(name, description, imageUrl, price)
+        val newCake = AddCake(name, description, imageUrl, price)
 
         databaseReference.child(cakeId).setValue(newCake)
             .addOnSuccessListener {

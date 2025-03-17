@@ -1,5 +1,7 @@
 package com.example.krupalcollege.Adapter
 
+import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -36,8 +38,13 @@ class CartAdapter(private val context: Context, private var cartList: MutableLis
 
         val cake = getItem(position) as Cake
 
-        tvCakeName.text = cake.name
-        tvCakePrice.text = "₹${cake.price}"
+        // Check if the activity is still valid before using Glide
+        if (context is Activity && (context.isDestroyed || context.isFinishing)) {
+            return view
+        }
+
+        tvCakeName.text = cake.name ?: "No Name Available"
+        tvCakePrice.text = "₹${cake.price.toDoubleOrNull() ?: "0"}"
 
         Glide.with(context)
             .load(cake.imageUrl)
@@ -47,17 +54,32 @@ class CartAdapter(private val context: Context, private var cartList: MutableLis
 
         // Remove Item from Cart
         ivRemoveCartItem.setOnClickListener {
-            if (userId != null) {
-                database.child(userId).child(cartKeys[position]).removeValue().addOnSuccessListener {
-                    Toast.makeText(context, "Item removed from cart", Toast.LENGTH_SHORT).show()
-                    cartList.removeAt(position)
-                    cartKeys.removeAt(position)
-                    notifyDataSetChanged()
-                }.addOnFailureListener {
-                    Toast.makeText(context, "Failed to remove item", Toast.LENGTH_SHORT).show()
-                }
+            if (userId != null && position < cartList.size) {
+                // Show ProgressDialog
+                val progressDialog = ProgressDialog(context)
+                progressDialog.setMessage("Removing item...")
+                progressDialog.setCancelable(false)
+                progressDialog.show()
+
+                database.child(userId).child(cartKeys[position]).removeValue()
+                    .addOnSuccessListener {
+                        progressDialog.dismiss() // Hide ProgressDialog
+
+                        if (position < cartList.size) {
+                            cartList.removeAt(position) // Remove item safely
+                            cartKeys.removeAt(position)
+                            notifyDataSetChanged()
+                        }
+
+                        Toast.makeText(context, "Item removed from cart", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener {
+                        progressDialog.dismiss()
+                        Toast.makeText(context, "Failed to remove item", Toast.LENGTH_SHORT).show()
+                    }
             }
         }
+
 
         return view
     }

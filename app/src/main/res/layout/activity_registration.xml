@@ -5,41 +5,82 @@
     android:orientation="vertical"
     android:padding="20dp">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Registration"
+        android:gravity="center"
+        android:textSize="40dp" />
+
     <EditText
         android:id="@+id/name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Full Name" />
+        android:layout_height="40dp"
+        android:hint="Full Name"
+        android:background="@drawable/costom_edittext"
+        android:paddingStart="10dp"
+        android:layout_marginTop="10dp"/>
 
     <EditText
         android:id="@+id/email"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email" />
+        android:layout_height="40dp"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/costom_edittext"
+        android:paddingStart="10dp"
+        android:layout_marginTop="10dp"/>
 
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:hint="Password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:background="@drawable/costom_edittext"
+        android:paddingStart="10dp"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:id="@+id/confirm_password"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="Confirm Password"
+        android:inputType="textPassword"
+        android:background="@drawable/costom_edittext"
+        android:paddingStart="10dp"
+        android:layout_marginTop="10dp"/>
 
     <EditText
         android:id="@+id/phone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:hint="Phone Number"
-        android:inputType="phone" />
+        android:inputType="phone"
+        android:background="@drawable/costom_edittext"
+        android:paddingStart="10dp"
+        android:layout_marginTop="10dp" />
 
     <EditText
         android:id="@+id/address"
         android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="Address"
+        android:background="@drawable/costom_edittext"
+        android:paddingStart="10dp"
+        android:layout_marginTop="10dp"/>
+
+    <ProgressBar
+        android:id="@+id/regprocess"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Address" />
+        android:layout_marginTop="10dp"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/register_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register" />
+        android:text="Register"
+        android:layout_marginTop="10dp"/>
 </LinearLayout>

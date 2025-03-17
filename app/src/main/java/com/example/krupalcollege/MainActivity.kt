@@ -7,6 +7,7 @@ import android.widget.GridView
 import android.widget.ListAdapter
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -74,6 +75,12 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finishAffinity() // Exits the app
+            }
+        })
 
         recyclerViewCategoryList = findViewById(R.id.recyclerView)
         recyclerViewCategory()
@@ -168,4 +175,5 @@ class MainActivity : AppCompatActivity() {
         gridView.layoutParams = params
         gridView.requestLayout()
     }
+
 }
